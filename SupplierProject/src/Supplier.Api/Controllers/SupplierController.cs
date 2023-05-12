@@ -1,15 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Supplier.Domain.Models;
 
 namespace Supplier.Api.Controllers
 {
     [ApiController]
-    [Route("api")]
+    [Route("api/")]
     public class SupplierController : ControllerBase
     {
-        [HttpGet]
-        public string HelloWorld() 
+        [HttpGet("suppliers")]
+        public List<SupplierType> GetAll()
         {
-            return "Hello World!";    
+            return new List<SupplierType> { new SupplierType { Id = 1 } };    
         }
     }
 }
