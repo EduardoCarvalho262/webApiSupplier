@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Supplier.Domain.Models;
+using Supplier.Service.Interfaces;
 
 namespace Supplier.Api.Controllers
 {
@@ -7,10 +8,21 @@ namespace Supplier.Api.Controllers
     [Route("api/")]
     public class SupplierController : ControllerBase
     {
+
+        private readonly ISupplierService _supplierService;
+
+        public SupplierController(ISupplierService supplierService)
+        {
+            _supplierService = supplierService;
+        }
+
+
         [HttpGet("suppliers")]
         public List<SupplierType> GetAll()
         {
-            return new List<SupplierType> { new SupplierType { Id = 1 } };    
+            var response = _supplierService.GetAllSuppliers();
+
+            return response;
         }
     }
 }
