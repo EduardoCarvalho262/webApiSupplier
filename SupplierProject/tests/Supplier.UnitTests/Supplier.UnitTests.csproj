@@ -27,10 +27,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Supplier.Api\Supplier.Api.csproj" />
     <ProjectReference Include="..\..\src\Supplier.Domain\Supplier.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Infra\" />
+    <ProjectReference Include="..\..\src\Supplier.Infra\Supplier.Infra.csproj" />
+    <ProjectReference Include="..\..\src\Supplier.Service\Supplier.Service.csproj" />
   </ItemGroup>
 
 </Project>

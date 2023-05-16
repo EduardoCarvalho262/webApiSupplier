@@ -7,7 +7,7 @@ namespace Supplier.Service.Services
     {
         public List<SupplierType> GetAllSuppliers()
         {
-            throw new NotImplementedException();
+            return new List<SupplierType>() { new SupplierType { Id = 1}};
         }
     }
 }
