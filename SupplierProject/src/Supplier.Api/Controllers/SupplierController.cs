@@ -18,11 +18,11 @@ namespace Supplier.Api.Controllers
 
 
         [HttpGet("suppliers")]
-        public List<SupplierType> GetAll()
+        public async Task<IActionResult> GetAll()
         {
             var response = _supplierService.GetAllSuppliers();
 
-            return response;
+            return Ok(response);
         }
     }
 }
