@@ -1,10 +1,18 @@
 ﻿using Supplier.Domain.Models;
+using Supplier.Infra.Context;
 using Supplier.Infra.Interfaces;
 
 namespace Supplier.Infra.Repository
 {
     public class SupplierRepository : ISupplierRepository
     {
+        private readonly ISupplierContext _supplierContext;
+
+        public SupplierRepository(ISupplierContext supplierContext)
+        {
+            _supplierContext = supplierContext;
+        }
+
         public void DeleteSupplier(int id)
         {
             throw new NotImplementedException();
@@ -12,7 +20,7 @@ namespace Supplier.Infra.Repository
 
         public IEnumerable<SupplierType> GetAllSuppliers()
         {
-            return new List<SupplierType>() { new SupplierType { Id = 2 } }.AsEnumerable<SupplierType>();
+            return _supplierContext.Supplier.ToList();
         }
 
         public SupplierType GetSupplier(int id)

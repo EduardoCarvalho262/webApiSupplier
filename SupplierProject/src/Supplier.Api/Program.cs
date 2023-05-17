@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Supplier.Infra.Context;
+using Supplier.Infra.Interfaces;
+using Supplier.Infra.Repository;
 using Supplier.Service.Interfaces;
 using Supplier.Service.Services;
 
@@ -10,6 +14,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<ISupplierService, SupplierService>();
+builder.Services.AddTransient<ISupplierRepository, SupplierRepository>();
+
+builder.Services.AddDbContext<SupplierContext>(options =>
+               options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ISupplierContext>(provider => provider.GetService<SupplierContext>());
 
 var app = builder.Build();
 
