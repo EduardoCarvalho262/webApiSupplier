@@ -2,10 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Supplier.Domain.Models;
-using Supplier.Infra.Context;
 using Supplier.Infra.Interfaces;
 using Supplier.Infra.Repository;
-using Supplier.Service.Services;
 
 namespace Supplier.UnitTests.Infra
 {
@@ -32,12 +30,12 @@ namespace Supplier.UnitTests.Infra
             var supplierRepository = new SupplierRepository(supplierContextMock.Object);
 
             // Act
-            var result =  supplierRepository.GetAllSuppliers().Result.ToList();
+            var result =  supplierRepository.GetAllSuppliers();
 
             // Assert
             result.Should().NotBeNull();
-            result.Should().HaveCount(supplierList.Count);
-            result.Should().BeEquivalentTo(supplierList);
+            result.Result.Should().HaveCount(3);
+            result.Result.ToList().Should().BeEquivalentTo(supplierList);
         }
 
 
