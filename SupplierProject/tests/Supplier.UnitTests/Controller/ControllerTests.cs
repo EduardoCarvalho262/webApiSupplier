@@ -14,7 +14,7 @@ public class ControllerTests
     {
         //Arrage
         var mockService = new Mock<ISupplierService>();
-        mockService.Setup(p => p.GetAllSuppliers()).Returns(new List<SupplierType> { new SupplierType { Id = 1 } });
+        mockService.Setup(p => p.GetAllSuppliers()).ReturnsAsync(new List<SupplierType> { new SupplierType { Id = 1 } });
         var controller = new SupplierController(mockService.Object);
         var expected = new List<SupplierType> {
             new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" } 
@@ -25,8 +25,8 @@ public class ControllerTests
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var supplier = OKResult.Value.Should().BeAssignableTo<List<SupplierType>>().Subject;
-        supplier.Should().HaveCount(supplier.Count);
+        var supplier = OKResult.Value.Should().BeAssignableTo<Task<IEnumerable<SupplierType>>>().Subject;
+        supplier.Result.Should().HaveCount(1);
     }
 
     [Fact]
@@ -34,18 +34,15 @@ public class ControllerTests
     {
         //Arrage
         var mockService = new Mock<ISupplierService>();
-        mockService.Setup(p => p.GetAllSuppliers()).Returns();
+        mockService.Setup(p => p.GetAllSuppliers()).ReturnsAsync(new List<SupplierType>());
         var controller = new SupplierController(mockService.Object);
-        var expected = new List<SupplierType> {
-            new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" }
-        };
 
         //Act
         var response = controller.GetAll();
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var supplier = OKResult.Value.Should().BeAssignableTo<List<SupplierType>>().Subject;
-        supplier.Should().HaveCount(supplier.Count);
+        var supplier = OKResult.Value.Should().BeAssignableTo<Task<IEnumerable<SupplierType>>>().Subject;
+        supplier.Result.Should().HaveCount(0);
     }
 }

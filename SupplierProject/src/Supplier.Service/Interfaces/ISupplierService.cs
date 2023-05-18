@@ -4,6 +4,6 @@ namespace Supplier.Service.Interfaces
 {
     public interface ISupplierService
     {
-        public List<SupplierType> GetAllSuppliers();
+        public Task<IEnumerable<SupplierType>> GetAllSuppliers();
     }
 }

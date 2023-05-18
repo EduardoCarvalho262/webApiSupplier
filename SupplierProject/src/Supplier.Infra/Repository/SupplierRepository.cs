@@ -1,4 +1,5 @@
-﻿using Supplier.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Supplier.Domain.Models;
 using Supplier.Infra.Context;
 using Supplier.Infra.Interfaces;
 
@@ -18,9 +19,9 @@ namespace Supplier.Infra.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<SupplierType> GetAllSuppliers()
+        public async Task<IEnumerable<SupplierType>> GetAllSuppliers()
         {
-            return _supplierContext.Supplier.ToList();
+            return await _supplierContext.Supplier.ToListAsync();
         }
 
         public SupplierType GetSupplier(int id)

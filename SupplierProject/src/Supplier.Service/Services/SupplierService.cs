@@ -1,13 +1,22 @@
 ﻿using Supplier.Domain.Models;
+using Supplier.Infra.Interfaces;
 using Supplier.Service.Interfaces;
 
 namespace Supplier.Service.Services
 {
     public class SupplierService : ISupplierService
     {
-        public List<SupplierType> GetAllSuppliers()
+
+        private readonly ISupplierRepository _supplierRepository;
+
+        public SupplierService(ISupplierRepository supplierRepository)
         {
-            return new List<SupplierType>() { new SupplierType { Id = 1}};
+            _supplierRepository = supplierRepository;
+        }
+
+        public async Task<IEnumerable<SupplierType>> GetAllSuppliers()
+        {
+            return  await _supplierRepository.GetAllSuppliers();
         }
     }
 }

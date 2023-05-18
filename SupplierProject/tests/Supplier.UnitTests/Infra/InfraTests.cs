@@ -16,6 +16,8 @@ namespace Supplier.UnitTests.Infra
         {
             // Arrange
             var supplierContextMock = new Mock<ISupplierContext>();
+
+
             var supplierList = new List<SupplierType>
             {
                 new SupplierType { Id = 1, FantasyName = "Supplier 1" },
@@ -30,7 +32,7 @@ namespace Supplier.UnitTests.Infra
             var supplierRepository = new SupplierRepository(supplierContextMock.Object);
 
             // Act
-            var result = supplierRepository.GetAllSuppliers();
+            var result =  supplierRepository.GetAllSuppliers().Result.ToList();
 
             // Assert
             result.Should().NotBeNull();
