@@ -43,16 +43,16 @@ namespace Supplier.UnitTests.Infra
         private Mock<DbSet<T>> CreateMockDbSet<T>(List<T> data) where T : class
         {
             var queryableData = data.AsQueryable();
+            var asyncEnumerableData = new TestAsyncEnumerable<T>(queryableData);
             var dbSetMock = new Mock<DbSet<T>>();
 
             dbSetMock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryableData.Provider);
             dbSetMock.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryableData.Expression);
             dbSetMock.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryableData.ElementType);
             dbSetMock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(queryableData.GetEnumerator());
+            dbSetMock.As<IAsyncEnumerable<T>>().Setup(m => m.GetAsyncEnumerator(It.IsAny<CancellationToken>())).Returns(new TestAsyncEnumerator<T>(queryableData.GetEnumerator()));
 
             return dbSetMock;
         }
-
-
     }
 }
