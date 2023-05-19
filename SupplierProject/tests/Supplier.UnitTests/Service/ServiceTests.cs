@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Supplier.Domain.Models;
 using Supplier.Infra.Interfaces;
@@ -18,11 +19,11 @@ namespace Supplier.UnitTests.Service
             var service = new SupplierService(mockRepository.Object);
 
             //Act
-            var response = service.GetAllSuppliers().Result.ToList();
-
+            var response = service.GetAllSuppliers();
 
             //Assert
-            response.Should().NotBeNullOrEmpty();
+            var OKResult = response.Should().BeOfType<Task<IEnumerable<SupplierType>>>().Subject;
+            var supplier = OKResult.Result.Should().HaveCount(mockReturn.Count);
         }
 
         [Fact]
@@ -40,6 +41,25 @@ namespace Supplier.UnitTests.Service
             //Assert
             response.Should().HaveCount(0);
             response.Should().BeEmpty();
+        }
+
+        [Fact]
+        public void GivenARequest_WhenGetASupplierId_ThenReturnASupplier()
+        {
+            //Arrage
+            var mockRepository = new Mock<ISupplierRepository>();
+            var mockReturn = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+            mockRepository.Setup(p => p.GetSupplier(It.IsAny<int>())).ReturnsAsync(mockReturn);
+            var service = new SupplierService(mockRepository.Object);
+
+            //Act
+            var response = service.GetSupplierById(1);
+
+
+            //Assert
+            var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
+            var supplier = OKResult.Value.Should().BeAssignableTo<Task<SupplierType>>().Subject;
+            supplier.Result.Id.Should().Be(mockReturn.Id);
         }
     }
 }

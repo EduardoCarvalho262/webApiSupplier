@@ -24,9 +24,14 @@ namespace Supplier.Infra.Repository
             return await _supplierContext.Supplier.ToListAsync();
         }
 
-        public SupplierType GetSupplier(int id)
+        public async Task<SupplierType> GetSupplier(int id)
         {
-            throw new NotImplementedException();
+            if(id == 0)
+            {
+                throw new ArgumentException("Invalid supplier ID.");
+            }
+
+            return await _supplierContext.Supplier.SingleAsync(x => x.Id == id);
         }
 
         public void InsertSupplier(SupplierType supplier)

@@ -18,5 +18,11 @@ namespace Supplier.Service.Services
         {
             return  await _supplierRepository.GetAllSuppliers();
         }
+
+
+        public async Task<SupplierType> GetSupplierById(int id)
+        {
+            return await _supplierRepository.GetSupplier(id);
+        }
     }
 }

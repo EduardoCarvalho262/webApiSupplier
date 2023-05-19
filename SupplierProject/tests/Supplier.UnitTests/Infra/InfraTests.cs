@@ -4,6 +4,7 @@ using Moq;
 using Supplier.Domain.Models;
 using Supplier.Infra.Interfaces;
 using Supplier.Infra.Repository;
+using System.Linq;
 
 namespace Supplier.UnitTests.Infra
 {
@@ -36,6 +37,26 @@ namespace Supplier.UnitTests.Infra
             result.Should().NotBeNull();
             result.Result.Should().HaveCount(3);
             result.Result.ToList().Should().BeEquivalentTo(supplierList);
+        }
+
+        [Fact]
+        public void GivenARequestToRepository_WhenGetASupplierId_ThenReturnALSupplier()
+        {
+            // Arrange
+            var supplierContextMock = new Mock<ISupplierContext>();
+            var supplier = new SupplierType { Id = 1, FantasyName = "Supplier 1" };
+            var supplierDbSetMock = CreateMockDbSet(new List<SupplierType> { supplier } );
+
+            supplierContextMock.Setup(c => c.Supplier.Single(It.IsAny<Func<SupplierType>>())).Returns(supplierDbSetMock.Object);
+
+            var supplierRepository = new SupplierRepository(supplierContextMock.Object);
+
+            // Act
+            var result = supplierRepository.GetSupplier(1);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Result.Id.Should().Be(supplier.Id);
         }
 
 

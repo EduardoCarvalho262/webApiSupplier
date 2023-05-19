@@ -20,7 +20,15 @@ namespace Supplier.Api.Controllers
         [HttpGet("suppliers")]
         public async Task<IActionResult> GetAll()
         {
-            var response = _supplierService.GetAllSuppliers();
+            var response = await _supplierService.GetAllSuppliers();
+
+            return Ok(response);
+        }
+
+        [HttpGet("supplier")]
+        public async Task<IActionResult> GetById([FromBody]int id)
+        {
+            var response = await _supplierService.GetSupplierById(id);
 
             return Ok(response);
         }
