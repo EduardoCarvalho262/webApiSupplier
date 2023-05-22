@@ -57,9 +57,9 @@ namespace Supplier.UnitTests.Service
 
 
             //Assert
-            var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
-            var supplier = OKResult.Value.Should().BeAssignableTo<Task<SupplierType>>().Subject;
-            supplier.Result.Id.Should().Be(mockReturn.Id);
+            response.Should().NotBeNull();
+            var result = response.Result.Should().BeOfType<SupplierType>().Subject;
+            var supplier = result.Id.Should().Be(mockReturn.Id);
         }
     }
 }
