@@ -61,5 +61,25 @@ namespace Supplier.UnitTests.Service
             var result = response.Result.Should().BeOfType<SupplierType>().Subject;
             var supplier = result.Id.Should().Be(mockReturn.Id);
         }
+
+
+        [Fact]
+        public void GivenARequest_WhenAddASupplier_ThenReturnASupplierId()
+        {
+            //Arrage
+            var mockRepository = new Mock<ISupplierRepository>();
+            var mockReturn = new SupplierType {Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+            mockRepository.Setup(p => p.InsertSupplier(It.IsAny<SupplierType>())).ReturnsAsync(mockReturn);
+            var service = new SupplierService(mockRepository.Object);
+
+            //Act
+            var response = service.InsertSupplier(mockReturn);
+
+
+            //Assert
+            response.Should().NotBeNull();
+            var result = response.Result.Should().BeOfType<SupplierType>().Subject;
+            var supplier = result.Id.Should().Be(mockReturn.Id);
+        }
     }
 }

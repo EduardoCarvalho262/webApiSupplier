@@ -32,5 +32,18 @@ namespace Supplier.Api.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("supplier")]
+        public async Task<IActionResult> InsertSupplier([FromBody] SupplierType supplier)
+        {
+            var response = await _supplierService.InsertSupplier(supplier);
+
+            if (response != null)
+            {
+                return Ok(response);
+            }
+            
+            return BadRequest();
+        }
     }
 }

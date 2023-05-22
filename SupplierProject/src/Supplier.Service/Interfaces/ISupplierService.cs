@@ -6,5 +6,6 @@ namespace Supplier.Service.Interfaces
     {
         public Task<IEnumerable<SupplierType>> GetAllSuppliers();
         public Task<SupplierType> GetSupplierById(int id);
+        public Task<SupplierType> InsertSupplier(SupplierType supplier);
     }
 }

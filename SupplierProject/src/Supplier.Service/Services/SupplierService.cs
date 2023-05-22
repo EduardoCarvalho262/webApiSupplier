@@ -24,5 +24,16 @@ namespace Supplier.Service.Services
         {
             return await _supplierRepository.GetSupplier(id);
         }
+
+        public Task<SupplierType> InsertSupplier(SupplierType supplier)
+        {
+            if(supplier == null)
+                throw new ArgumentNullException(nameof(supplier));
+
+            var response = _supplierRepository.InsertSupplier(supplier);
+
+            return response;
+
+        }
     }
 }

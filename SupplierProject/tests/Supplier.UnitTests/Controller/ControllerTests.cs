@@ -63,4 +63,23 @@ public class ControllerTests
         var supplier = OKResult.Value.Should().BeAssignableTo<SupplierType>().Subject;
         supplier.Should().BeEquivalentTo(expected);
     }
+
+
+    [Fact]
+    public void GivenARequest_WhenAddASupplier_ThenReturnOk()
+    {
+        //Arrage
+        var mockService = new Mock<ISupplierService>();
+        mockService.Setup(p => p.InsertSupplier(It.IsAny<SupplierType>())).ReturnsAsync(new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" });
+        var controller = new SupplierController(mockService.Object);
+        var expected = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+
+        //Act
+        var response = controller.InsertSupplier(expected);
+
+        //Assert
+        var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
+        var supplier = OKResult.Value.Should().BeAssignableTo<SupplierType>().Subject;
+        supplier.Should().BeEquivalentTo(expected);
+    }
 }
