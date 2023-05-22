@@ -60,7 +60,7 @@ public class ControllerTests
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var supplier = OKResult.Value.Should().BeAssignableTo<Task<SupplierType>>().Subject;
-        supplier.Result.Should().Be(expected.Id);
+        var supplier = OKResult.Value.Should().BeAssignableTo<SupplierType>().Subject;
+        supplier.Should().BeEquivalentTo(expected);
     }
 }
