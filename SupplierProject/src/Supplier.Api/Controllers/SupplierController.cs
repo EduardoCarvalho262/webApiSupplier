@@ -26,7 +26,7 @@ namespace Supplier.Api.Controllers
         }
 
         [HttpGet("supplier")]
-        public async Task<IActionResult> GetById([FromBody]int id)
+        public async Task<IActionResult> GetById(int id)
         {
             var response = await _supplierService.GetSupplierById(id);
 
