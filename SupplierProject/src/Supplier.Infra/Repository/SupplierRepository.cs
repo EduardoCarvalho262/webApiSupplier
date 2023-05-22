@@ -31,7 +31,14 @@ namespace Supplier.Infra.Repository
                 throw new ArgumentException("Invalid supplier ID.");
             }
 
-            return await _supplierContext.Supplier.SingleAsync(x => x.Id == id);
+            var response = await _supplierContext.Supplier.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(response == null)
+            {
+                throw new Exception("Not Found supplier");
+            }
+
+            return response;
         }
 
         public void InsertSupplier(SupplierType supplier)

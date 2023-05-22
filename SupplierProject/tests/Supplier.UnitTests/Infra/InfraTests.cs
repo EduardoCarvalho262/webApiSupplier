@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Supplier.Domain.Models;
+using Supplier.Infra.Context;
 using Supplier.Infra.Interfaces;
 using Supplier.Infra.Repository;
-using System.Linq;
 
 namespace Supplier.UnitTests.Infra
 {
@@ -40,24 +40,33 @@ namespace Supplier.UnitTests.Infra
         }
 
         [Fact]
-        public void GivenARequestToRepository_WhenGetASupplierId_ThenReturnALSupplier()
+        public async Task GivenARequestToRepository_WhenGetASupplierId_ThenReturnALSupplier()
         {
             // Arrange
-            var supplierContextMock = new Mock<ISupplierContext>();
-            var supplier = new SupplierType { Id = 1, FantasyName = "Supplier 1" };
-            var supplierDbSetMock = CreateMockDbSet(new List<SupplierType> { supplier } );
+            var options = new DbContextOptionsBuilder<SupplierContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
 
-            supplierContextMock.Setup(c => c.Supplier.Single(It.IsAny<Func<SupplierType>>())).Returns(supplierDbSetMock.Object);
+            using (var context = new SupplierContext(options))
+            {
+                var supplier = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+                context.Supplier.Add(supplier);
+                context.SaveChanges();
+            }
 
-            var supplierRepository = new SupplierRepository(supplierContextMock.Object);
+            using (var context = new SupplierContext(options))
+            {
+                var supplierRepository = new SupplierRepository(context);
 
-            // Act
-            var result = supplierRepository.GetSupplier(1);
+                // Act
+                var result = await supplierRepository.GetSupplier(1);
 
-            // Assert
-            result.Should().NotBeNull();
-            result.Result.Id.Should().Be(supplier.Id);
+                // Assert
+                result.Should().NotBeNull();
+                result.Id.Should().Be(1);
+            }
         }
+
 
 
 
