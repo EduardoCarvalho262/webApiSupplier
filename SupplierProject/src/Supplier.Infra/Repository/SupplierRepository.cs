@@ -14,7 +14,7 @@ namespace Supplier.Infra.Repository
             _supplierContext = supplierContext;
         }
 
-        public void DeleteSupplier(int id)
+        public async Task<string> DeleteSupplier(int id)
         {
             throw new NotImplementedException();
         }
@@ -41,17 +41,25 @@ namespace Supplier.Infra.Repository
             return response;
         }
 
-        public void InsertSupplier(SupplierType supplier)
+        public async Task<SupplierType> InsertSupplier(SupplierType supplier)
         {
-            throw new NotImplementedException();
+            if (supplier == null)
+            {
+                throw new ArgumentNullException("Usuário vazio.");
+            }
+
+            _supplierContext.Supplier.Add(supplier);
+            await SaveAsync();
+
+            return supplier;
         }
 
-        public void Save()
+        public Task SaveAsync()
         {
-            throw new NotImplementedException();
+           return _supplierContext.SaveChangesAsync();
         }
 
-        public void UpdateSupplier(SupplierType supplier)
+        public async Task<SupplierType> UpdateSupplier(SupplierType supplier)
         {
             throw new NotImplementedException();
         }

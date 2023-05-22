@@ -17,9 +17,9 @@ namespace Supplier.Infra.Context
 
         public DbSet<SupplierType> Supplier { get; set; }
 
-        int ISupplierContext.SaveChanges()
+        Task<int> ISupplierContext.SaveChangesAsync()
         {
-            return base.SaveChanges();
+            return base.SaveChangesAsync();
         }
     }
 }

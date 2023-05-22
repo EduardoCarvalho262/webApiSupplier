@@ -6,9 +6,9 @@ namespace Supplier.Infra.Interfaces
     {
         Task<IEnumerable<SupplierType>> GetAllSuppliers();
         Task<SupplierType> GetSupplier(int id);
-        void InsertSupplier(SupplierType supplier);
-        void UpdateSupplier(SupplierType supplier);
-        void DeleteSupplier(int id);
-        void Save();
+        Task<SupplierType> InsertSupplier(SupplierType supplier);
+        Task<SupplierType> UpdateSupplier(SupplierType supplier);
+        Task<string> DeleteSupplier(int id);
+        Task SaveAsync();
     }
 }

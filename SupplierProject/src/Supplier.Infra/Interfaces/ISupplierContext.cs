@@ -11,6 +11,6 @@ namespace Supplier.Infra.Interfaces
     public interface ISupplierContext
     {
         DbSet<SupplierType> Supplier { get; set; }
-        int SaveChanges();
+        Task<int> SaveChangesAsync();
     }
 }
