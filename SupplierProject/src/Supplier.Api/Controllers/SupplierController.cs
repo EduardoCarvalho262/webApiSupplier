@@ -30,6 +30,9 @@ namespace Supplier.Api.Controllers
         {
             var response = await _supplierService.GetSupplierById(id);
 
+            if (response == null)
+                return NotFound();
+
             return Ok(response);
         }
 

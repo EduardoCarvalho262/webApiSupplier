@@ -33,12 +33,7 @@ namespace Supplier.Infra.Repository
 
             var response = await _supplierContext.Supplier.FirstOrDefaultAsync(x => x.Id == id);
 
-            if(response == null)
-            {
-                throw new Exception("Not Found supplier");
-            }
-
-            return response;
+            return response == null ? throw new Exception("Not Found supplier") : response;
         }
 
         public async Task<SupplierType> InsertSupplier(SupplierType supplier)

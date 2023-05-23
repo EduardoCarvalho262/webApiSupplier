@@ -22,7 +22,14 @@ namespace Supplier.Service.Services
 
         public async Task<SupplierType> GetSupplierById(int id)
         {
-            return await _supplierRepository.GetSupplier(id);
+            try
+            {
+                return await _supplierRepository.GetSupplier(id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public Task<SupplierType> InsertSupplier(SupplierType supplier)
