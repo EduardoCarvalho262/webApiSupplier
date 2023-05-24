@@ -28,7 +28,7 @@ namespace Supplier.Service.Services
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 
@@ -41,6 +41,16 @@ namespace Supplier.Service.Services
 
             return response;
 
+        }
+
+        public Task<SupplierType> UpdateSupplier(SupplierType newSupplier)
+        {
+            if (newSupplier == null)
+                throw new ArgumentNullException(nameof(newSupplier));
+
+            var response = _supplierRepository.UpdateSupplier(newSupplier);
+
+            return response;
         }
     }
 }

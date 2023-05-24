@@ -48,5 +48,18 @@ namespace Supplier.Api.Controllers
             
             return BadRequest();
         }
+
+        [HttpPut("supplier")]
+        public async Task<IActionResult> UpdateSupplier([FromBody] SupplierType supplier)
+        {
+            var response = await _supplierService.UpdateSupplier(supplier);
+
+            if (response != null)
+            {
+                return Ok(response);
+            }
+
+            return BadRequest();
+        }
     }
 }

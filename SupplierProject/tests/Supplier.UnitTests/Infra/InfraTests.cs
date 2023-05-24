@@ -21,8 +21,8 @@ namespace Supplier.UnitTests.Infra
             var supplierList = new List<SupplierType>
             {
                 new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041"  },
-                new SupplierType { Id = 2, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041"  },
-                new SupplierType { Id = 3, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041"  }
+                new SupplierType { Id = 2, FantasyName = "Mc Donalds2", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041"  },
+                new SupplierType { Id = 3, FantasyName = "Mc Donalds3", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041"  }
             };
 
             using (var context = new SupplierContext(options))
@@ -96,6 +96,37 @@ namespace Supplier.UnitTests.Infra
                 // Assert
                 result.Should().NotBeNull();
                 result.Id.Should().Be(1);
+            }
+        }
+
+        [Fact]
+        public async Task GivenARequestToRepository_WhenTryToUpdateASupplier_ThenReturnIdAndName()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<SupplierContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
+
+            using (var context = new SupplierContext(options))
+            {
+                var supplierTest = new SupplierType { Id = 1, FantasyName = "Mac Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+                context.Supplier.Add(supplierTest);
+                context.SaveChanges();
+            }
+
+            var supplier = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+            var FantasyNameExpected = "Mc Donalds";
+            using (var context = new SupplierContext(options))
+            {
+                var supplierRepository = new SupplierRepository(context);
+
+                // Act
+                var result = await supplierRepository.UpdateSupplier(supplier);
+
+                // Assert
+                result.Should().NotBeNull();
+                result.Id.Should().Be(1);
+                result.FantasyName.Should().Be(FantasyNameExpected);
             }
         }
     }

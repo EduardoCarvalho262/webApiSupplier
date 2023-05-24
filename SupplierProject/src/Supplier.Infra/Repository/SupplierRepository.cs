@@ -56,7 +56,16 @@ namespace Supplier.Infra.Repository
 
         public async Task<SupplierType> UpdateSupplier(SupplierType supplier)
         {
-            throw new NotImplementedException();
+            if(supplier == null)
+            {
+                throw new ArgumentNullException("Usuário vazio.");
+            }
+
+            _supplierContext.Supplier.Update(supplier);
+
+            await SaveAsync();
+
+            return supplier;
         }
     }
 }
