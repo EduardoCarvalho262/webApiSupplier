@@ -78,7 +78,7 @@ public class ControllerTests
         var response = controller.InsertSupplier(expected);
 
         //Assert
-        var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
+        var OKResult = response.Result.Should().BeOfType<CreatedResult>().Subject;
         var supplier = OKResult.Value.Should().BeAssignableTo<SupplierType>().Subject;
         supplier.Should().BeEquivalentTo(expected);
     }
@@ -97,8 +97,6 @@ public class ControllerTests
         var response = controller.UpdateSupplier(newSupplier);
 
         //Assert
-        var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var supplier = OKResult.Value.Should().BeAssignableTo<SupplierType>().Subject;
-        supplier.Should().BeEquivalentTo(newSupplier);
+        var OKResult = response.Result.Should().BeOfType<NoContentResult>().Subject;
     }
 }

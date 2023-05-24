@@ -43,7 +43,7 @@ namespace Supplier.Api.Controllers
 
             if (response != null)
             {
-                return Ok(response);
+                return Created("/api/supplier/" + response.Id, response);
             }
             
             return BadRequest();
@@ -56,7 +56,7 @@ namespace Supplier.Api.Controllers
 
             if (response != null)
             {
-                return Ok(response);
+                return NoContent();
             }
 
             return BadRequest();
