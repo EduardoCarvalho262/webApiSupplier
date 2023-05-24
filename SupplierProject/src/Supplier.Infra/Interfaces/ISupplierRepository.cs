@@ -8,7 +8,7 @@ namespace Supplier.Infra.Interfaces
         Task<SupplierType> GetSupplier(int id);
         Task<SupplierType> InsertSupplier(SupplierType supplier);
         Task<SupplierType> UpdateSupplier(SupplierType supplier);
-        Task<string> DeleteSupplier(int id);
+        Task<bool> DeleteSupplier(int id);
         Task SaveAsync();
     }
 }

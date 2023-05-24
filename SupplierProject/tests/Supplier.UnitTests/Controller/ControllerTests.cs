@@ -99,4 +99,20 @@ public class ControllerTests
         //Assert
         var OKResult = response.Result.Should().BeOfType<NoContentResult>().Subject;
     }
+
+    [Fact]
+    public void GivenARequest_WhenDeleteASupplier_ThenReturnOk()
+    {
+        //Arrage
+        var mockService = new Mock<ISupplierService>();
+        mockService.Setup(p => p.DeleteSupplier(It.IsAny<int>())).ReturnsAsync(true);
+        var controller = new SupplierController(mockService.Object);
+      
+
+        //Act
+        var response = controller.DeleteSupplier(1);
+
+        //Assert
+        var OKResult = response.Result.Should().BeOfType<NoContentResult>().Subject;
+    }
 }

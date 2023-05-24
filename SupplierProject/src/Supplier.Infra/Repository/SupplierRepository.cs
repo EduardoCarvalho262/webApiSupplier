@@ -14,9 +14,19 @@ namespace Supplier.Infra.Repository
             _supplierContext = supplierContext;
         }
 
-        public async Task<string> DeleteSupplier(int id)
+        public async Task<bool> DeleteSupplier(int id)
         {
-            throw new NotImplementedException();
+            var supplier = _supplierContext.Supplier.FirstOrDefault(x => x.Id == id);
+
+            if (supplier == null)
+            {
+                return false;
+            }
+
+            _supplierContext.Supplier.Remove(supplier);
+            await _supplierContext.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<IEnumerable<SupplierType>> GetAllSuppliers()

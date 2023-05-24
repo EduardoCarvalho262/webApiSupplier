@@ -61,5 +61,18 @@ namespace Supplier.Api.Controllers
 
             return BadRequest();
         }
+
+        [HttpDelete("supplier")]
+        public async Task<IActionResult> DeleteSupplier(int id)
+        {
+            var response = await _supplierService.DeleteSupplier(id);
+
+            if (response)
+            {
+                return NoContent();
+            }
+
+            return BadRequest();
+        }
     }
 }

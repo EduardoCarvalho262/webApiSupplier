@@ -100,5 +100,22 @@ namespace Supplier.UnitTests.Service
             var result = response.Result.Should().BeOfType<SupplierType>().Subject;
             var supplier = result.Id.Should().Be(mockReturn.Id);
         }
+
+        [Fact]
+        public void GivenARequest_WhenUDeleteASupplier_ThenReturnASupplier()
+        {
+            //Arrage
+            var mockRepository = new Mock<ISupplierRepository>();
+            mockRepository.Setup(p => p.DeleteSupplier(It.IsAny<int>())).ReturnsAsync(true);
+            var service = new SupplierService(mockRepository.Object);
+
+            //Act
+            var response = service.DeleteSupplier(1);
+
+
+            //Assert
+            response.Should().NotBeNull();
+            response.Result.Should().BeTrue();
+        }
     }
 }

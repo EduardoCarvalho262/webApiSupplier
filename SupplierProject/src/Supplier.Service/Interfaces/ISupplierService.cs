@@ -8,5 +8,6 @@ namespace Supplier.Service.Interfaces
         public Task<SupplierType> GetSupplierById(int id);
         public Task<SupplierType> InsertSupplier(SupplierType supplier);
         public Task<SupplierType> UpdateSupplier(SupplierType supplier);
+        public Task<bool> DeleteSupplier(int id);
     }
 }

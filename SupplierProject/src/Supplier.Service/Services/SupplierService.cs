@@ -14,6 +14,11 @@ namespace Supplier.Service.Services
             _supplierRepository = supplierRepository;
         }
 
+        public async Task<bool> DeleteSupplier(int id)
+        {
+            return await _supplierRepository.DeleteSupplier(id);
+        }
+
         public async Task<IEnumerable<SupplierType>> GetAllSuppliers()
         {
             return  await _supplierRepository.GetAllSuppliers();
