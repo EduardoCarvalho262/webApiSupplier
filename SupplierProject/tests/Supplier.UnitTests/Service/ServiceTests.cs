@@ -23,7 +23,7 @@ namespace Supplier.UnitTests.Service
 
             //Assert
             var OKResult = response.Should().BeOfType<Task<IEnumerable<SupplierType>>>().Subject;
-            var supplier = OKResult.Result.Should().HaveCount(mockReturn.Count);
+            OKResult.Result.Should().HaveCount(mockReturn.Count);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace Supplier.UnitTests.Service
             //Assert
             response.Should().NotBeNull();
             var result = response.Result.Should().BeOfType<SupplierType>().Subject;
-            var supplier = result.Id.Should().Be(mockReturn.Id);
+            result.Id.Should().Be(mockReturn.Id);
         }
 
 
@@ -79,7 +79,7 @@ namespace Supplier.UnitTests.Service
             //Assert
             response.Should().NotBeNull();
             var result = response.Result.Should().BeOfType<SupplierType>().Subject;
-            var supplier = result.Id.Should().Be(mockReturn.Id);
+            result.Id.Should().Be(mockReturn.Id);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace Supplier.UnitTests.Service
             //Assert
             response.Should().NotBeNull();
             var result = response.Result.Should().BeOfType<SupplierType>().Subject;
-            var supplier = result.Id.Should().Be(mockReturn.Id);
+            result.Id.Should().Be(mockReturn.Id);
         }
 
         [Fact]
