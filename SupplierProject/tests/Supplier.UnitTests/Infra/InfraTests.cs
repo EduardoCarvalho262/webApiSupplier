@@ -156,5 +156,32 @@ namespace Supplier.UnitTests.Infra
                 result.Should().BeTrue();
             }
         }
+
+        [Fact]
+        public async Task GivenAEmptySupplierToRepository_WhenTryToDeleteASupplier_ThenReturnFalse()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<SupplierContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
+
+            using (var context = new SupplierContext(options))
+            {
+                var supplierTest = new SupplierType { Id = 2, FantasyName = "Mac Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+                context.Supplier.Add(supplierTest);
+                context.SaveChanges();
+            }
+
+            using (var context = new SupplierContext(options))
+            {
+                var supplierRepository = new SupplierRepository(context);
+
+                // Act
+                var result = await supplierRepository.DeleteSupplier(1);
+
+                // Assert
+                result.Should().BeFalse();
+            }
+        }
     }
 }
