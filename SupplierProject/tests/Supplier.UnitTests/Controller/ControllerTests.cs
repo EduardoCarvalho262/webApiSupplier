@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Supplier.Api.Controllers;
 using Supplier.Domain.Models;
+using Supplier.Domain.Responses;
 using Supplier.Service.Interfaces;
 
 namespace Supplier.UnitTests.Controller;
@@ -25,7 +26,7 @@ public class ControllerTests
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var suppliers = OKResult.Value.Should().BeAssignableTo<IEnumerable<SupplierType>>().Subject;
+        var suppliers = OKResult.Value.Should().BeAssignableTo<IEnumerable<SupplierResponse>>().Subject;
         suppliers.Should().HaveCount(1);
     }
 
@@ -42,7 +43,7 @@ public class ControllerTests
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var suppliers = OKResult.Value.Should().BeAssignableTo<IEnumerable<SupplierType>>().Subject;
+        var suppliers = OKResult.Value.Should().BeAssignableTo<IEnumerable<SupplierResponse>>().Subject;
         suppliers.Should().HaveCount(0);
     }
 
@@ -60,7 +61,7 @@ public class ControllerTests
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var supplier = OKResult.Value.Should().BeAssignableTo<SupplierType>().Subject;
+        var supplier = OKResult.Value.Should().BeAssignableTo<SupplierResponse>().Subject;
         supplier.Should().BeEquivalentTo(expected);
     }
 
@@ -79,7 +80,7 @@ public class ControllerTests
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<CreatedResult>().Subject;
-        var supplier = OKResult.Value.Should().BeAssignableTo<SupplierType>().Subject;
+        var supplier = OKResult.Value.Should().BeAssignableTo<SupplierResponse>().Subject;
         supplier.Should().BeEquivalentTo(expected);
     }
 
@@ -102,7 +103,7 @@ public class ControllerTests
 
 
     [Fact]
-    public void GivenARequest_WhenUpdateAnonexistentSupplier_ThenReturnBadRequest()
+    public void GivenARequest_WhenUpdateANonexistentSupplier_ThenReturnBadRequest()
     {
         //Arrage
         var mockService = new Mock<ISupplierService>();

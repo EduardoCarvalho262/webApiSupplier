@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Supplier.Domain.DTOs;
 using Supplier.Domain.Models;
 using Supplier.Infra.Interfaces;
 using Supplier.Service.Services;
@@ -22,7 +23,7 @@ namespace Supplier.UnitTests.Service
             var response = service.GetAllSuppliers();
 
             //Assert
-            var OKResult = response.Should().BeOfType<Task<IEnumerable<SupplierType>>>().Subject;
+            var OKResult = response.Should().BeOfType<Task<IEnumerable<SupplierTypeDTO>>>().Subject;
             OKResult.Result.Should().HaveCount(mockReturn.Count);
         }
 
@@ -58,7 +59,7 @@ namespace Supplier.UnitTests.Service
 
             //Assert
             response.Should().NotBeNull();
-            var result = response.Result.Should().BeOfType<SupplierType>().Subject;
+            var result = response.Result.Should().BeOfType<SupplierTypeDTO>().Subject;
             result.Id.Should().Be(mockReturn.Id);
         }
 
@@ -78,7 +79,7 @@ namespace Supplier.UnitTests.Service
 
             //Assert
             response.Should().NotBeNull();
-            var result = response.Result.Should().BeOfType<SupplierType>().Subject;
+            var result = response.Result.Should().BeOfType<SupplierTypeDTO>().Subject;
             result.Id.Should().Be(mockReturn.Id);
         }
 
@@ -97,7 +98,7 @@ namespace Supplier.UnitTests.Service
 
             //Assert
             response.Should().NotBeNull();
-            var result = response.Result.Should().BeOfType<SupplierType>().Subject;
+            var result = response.Result.Should().BeOfType<SupplierTypeDTO>().Subject;
             result.Id.Should().Be(mockReturn.Id);
         }
 
