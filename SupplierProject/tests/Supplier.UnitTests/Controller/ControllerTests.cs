@@ -100,6 +100,25 @@ public class ControllerTests
         var OKResult = response.Result.Should().BeOfType<NoContentResult>().Subject;
     }
 
+
+    [Fact]
+    public void GivenARequest_WhenUpdateAnonexistentSupplier_ThenReturnBadRequest()
+    {
+        //Arrage
+        var mockService = new Mock<ISupplierService>();
+        mockService.Setup(p => p.UpdateSupplier(It.IsAny<SupplierType>())).ReturnsAsync(new SupplierType { Id = 2, FantasyName = "Mac Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" });
+        var controller = new SupplierController(mockService.Object);
+        var newSupplier = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+
+        //Act
+        var response = controller.UpdateSupplier(newSupplier);
+
+        //Assert
+        var OKResult = response.Result.Should().BeOfType<BadRequestResult>().Subject;
+    }
+
+
+
     [Fact]
     public void GivenARequest_WhenDeleteASupplier_ThenReturnOk()
     {
@@ -114,5 +133,21 @@ public class ControllerTests
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<NoContentResult>().Subject;
+    }
+
+    [Fact]
+    public void GivenARequestWithIdWorng_WhenDeleteASupplier_ThenReturn400()
+    {
+        //Arrage
+        var mockService = new Mock<ISupplierService>();
+        mockService.Setup(p => p.DeleteSupplier(It.IsAny<int>())).ReturnsAsync(false);
+        var controller = new SupplierController(mockService.Object);
+
+
+        //Act
+        var response = controller.DeleteSupplier(2);
+
+        //Assert
+        var OKResult = response.Result.Should().BeOfType<BadRequestResult>().Subject;
     }
 }
