@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Supplier.Domain.DTOs
+﻿namespace Supplier.Domain.DTOs
 {
     public class SupplierTypeDTO
     {
+        public int Id { get; set; }
+        public string Cnpj { get; set; }
+        public string FantasyName { get; set; }
+        public string Email { get; set; }
+        public string Telephone { get; set; }
     }
 }
