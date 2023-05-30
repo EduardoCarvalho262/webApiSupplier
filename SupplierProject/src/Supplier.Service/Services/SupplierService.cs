@@ -39,7 +39,6 @@ namespace Supplier.Service.Services
            
         }
 
-
         public async Task<SupplierTypeDTO> GetSupplierById(int id)
         {
             try
