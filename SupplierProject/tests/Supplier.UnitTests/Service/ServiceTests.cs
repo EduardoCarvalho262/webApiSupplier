@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using FluentAssertions;
 using Moq;
 using Supplier.Domain.DTOs;
 using Supplier.Domain.Models;
@@ -10,33 +10,41 @@ namespace Supplier.UnitTests.Service
 {
     public class ServiceTests
     {
+        private readonly SupplierService _supplierService;
+        private readonly Mock<ISupplierRepository> _supplierRepositoryMock;
+        private readonly Mock<IMapper> _mapperMock;
+
+        public ServiceTests()
+        {
+            _supplierRepositoryMock = new Mock<ISupplierRepository>();
+            _mapperMock = new Mock<IMapper>();
+            _supplierService = new SupplierService(_supplierRepositoryMock.Object, _mapperMock.Object);
+        }
+
         [Fact]
-        public void GivenACall_WhenGettingAllSuppliers_ThenReturnAList()
+        public async Task GivenACall_WhenGettingAllSuppliers_ThenReturnAListAsync()
         {
             //Arrage
-            var mockRepository = new Mock<ISupplierRepository>();
             var mockReturn = new List<SupplierType>() { new SupplierType { Id = 1 } }.ToList();
-            mockRepository.Setup(p => p.GetAllSuppliers()).ReturnsAsync(mockReturn.AsEnumerable<SupplierType>);
-            var service = new SupplierService(mockRepository.Object);
+            var expectedResponse = new List<SupplierTypeDTO>().AsEnumerable();
+            _supplierRepositoryMock.Setup(p => p.GetAllSuppliers()).ReturnsAsync(mockReturn.AsEnumerable<SupplierType>);
 
             //Act
-            var response = service.GetAllSuppliers();
+            var response = await _supplierService.GetAllSuppliers();
 
             //Assert
-            var OKResult = response.Should().BeOfType<Task<IEnumerable<SupplierTypeDTO>>>().Subject;
-            OKResult.Result.Should().HaveCount(mockReturn.Count);
+            response.Should().BeAssignableTo<IEnumerable<SupplierTypeDTO>>();
+            response.Should().ContainInOrder(expectedResponse);
         }
 
         [Fact]
         public void GivenARequest_WhenGettingAllSuppliersEmpty_ThenReturnAListEmpty()
         {
             //Arrage
-            var mockRepository = new Mock<ISupplierRepository>();
-            mockRepository.Setup(p => p.GetAllSuppliers()).ReturnsAsync(new List<SupplierType>());
-            var service = new SupplierService(mockRepository.Object);
+            _supplierRepositoryMock.Setup(p => p.GetAllSuppliers()).ReturnsAsync(new List<SupplierType>());
 
             //Act
-            var response = service.GetAllSuppliers().Result.ToList();
+            var response = _supplierService.GetAllSuppliers().Result.ToList();
 
 
             //Assert
@@ -45,73 +53,81 @@ namespace Supplier.UnitTests.Service
         }
 
         [Fact]
-        public void GivenARequest_WhenGetASupplierId_ThenReturnASupplier()
+        public async Task GivenARequest_WhenGetASupplierId_ThenReturnASupplierAsync()
         {
-            //Arrage
-            var mockRepository = new Mock<ISupplierRepository>();
-            var mockReturn = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
-            mockRepository.Setup(p => p.GetSupplier(It.IsAny<int>())).ReturnsAsync(mockReturn);
-            var service = new SupplierService(mockRepository.Object);
+            // Arrange
+            int supplierId = 1;
+            var mockSupplier = new SupplierType { Id = supplierId, FantasyName = "Supplier A" };
+            var expectedResponse = new SupplierTypeDTO { Id = supplierId, FantasyName = "Supplier A" };
 
-            //Act
-            var response = service.GetSupplierById(1);
+            _supplierRepositoryMock.Setup(repo => repo.GetSupplier(supplierId)).ReturnsAsync(mockSupplier);
+            _mapperMock.Setup(mapper => mapper.Map<SupplierTypeDTO>(mockSupplier)).Returns(expectedResponse);
 
+            // Act
+            var result = await _supplierService.GetSupplierById(supplierId);
 
-            //Assert
-            response.Should().NotBeNull();
-            var result = response.Result.Should().BeOfType<SupplierTypeDTO>().Subject;
-            result.Id.Should().Be(mockReturn.Id);
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(expectedResponse);
         }
 
 
         [Fact]
-        public void GivenARequest_WhenAddASupplier_ThenReturnASupplierId()
+        public async Task GivenARequest_WhenAddASupplier_ThenReturnASupplierDTOAsync()
         {
-            //Arrage
-            var mockRepository = new Mock<ISupplierRepository>();
-            var mockReturn = new SupplierType {Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
-            mockRepository.Setup(p => p.InsertSupplier(It.IsAny<SupplierType>())).ReturnsAsync(mockReturn);
-            var service = new SupplierService(mockRepository.Object);
+            // Arrange
+            var supplierDto = new SupplierTypeDTO { Id = 1, FantasyName = "Supplier A" };
+            var newSupplier = new SupplierType { Id = 1, FantasyName = "Supplier A" };
+            var insertedSupplier = new SupplierType { Id = 1, FantasyName = "Supplier A" };
+            var expectedResponse = new SupplierTypeDTO { Id = 1, FantasyName = "Supplier A" };
 
-            //Act
-            var response = service.InsertSupplier(mockReturn);
+            _mapperMock.Setup(mapper => mapper.Map<SupplierType>(supplierDto)).Returns(newSupplier);
+            _supplierRepositoryMock.Setup(repo => repo.InsertSupplier(newSupplier)).ReturnsAsync(insertedSupplier);
+            _mapperMock.Setup(mapper => mapper.Map<SupplierTypeDTO>(insertedSupplier)).Returns(expectedResponse);
 
+            // Act
+            var result = await _supplierService.InsertSupplier(supplierDto);
 
-            //Assert
-            response.Should().NotBeNull();
-            var result = response.Result.Should().BeOfType<SupplierTypeDTO>().Subject;
-            result.Id.Should().Be(mockReturn.Id);
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(expectedResponse);
         }
 
         [Fact]
         public void GivenARequest_WhenUpdateASupplier_ThenReturnASupplierUpdated()
         {
             //Arrage
-            var mockRepository = new Mock<ISupplierRepository>();
             var mockReturn = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
-            mockRepository.Setup(p => p.UpdateSupplier(It.IsAny<SupplierType>())).ReturnsAsync(mockReturn);
-            var service = new SupplierService(mockRepository.Object);
+            var returnExpected = new SupplierTypeDTO { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+            _supplierRepositoryMock.Setup(p => p.UpdateSupplier(It.IsAny<SupplierType>())).ReturnsAsync(mockReturn);
+            _mapperMock.Setup(mapper => mapper.Map<SupplierTypeDTO>(It.IsAny<SupplierType>()))
+            .Returns(new SupplierTypeDTO
+            {
+                Id = returnExpected.Id,
+                FantasyName = returnExpected.FantasyName,
+                Cnpj = returnExpected.Cnpj,
+                Email = returnExpected.Email,
+                Telephone = returnExpected.Telephone
+            });
 
             //Act
-            var response = service.UpdateSupplier(mockReturn);
+            var response = _supplierService.UpdateSupplier(returnExpected);
 
 
             //Assert
             response.Should().NotBeNull();
-            var result = response.Result.Should().BeOfType<SupplierTypeDTO>().Subject;
-            result.Id.Should().Be(mockReturn.Id);
+            response.Result.Should().BeOfType<Task<SupplierTypeDTO>>();
+            response.Result.Id.Should().Be(mockReturn.Id);
         }
 
         [Fact]
         public void GivenARequest_WhenUDeleteASupplier_ThenReturnASupplier()
         {
             //Arrage
-            var mockRepository = new Mock<ISupplierRepository>();
-            mockRepository.Setup(p => p.DeleteSupplier(It.IsAny<int>())).ReturnsAsync(true);
-            var service = new SupplierService(mockRepository.Object);
+            _supplierRepositoryMock.Setup(p => p.DeleteSupplier(It.IsAny<int>())).ReturnsAsync(true);
 
             //Act
-            var response = service.DeleteSupplier(1);
+            var response = _supplierService.DeleteSupplier(1);
 
 
             //Assert

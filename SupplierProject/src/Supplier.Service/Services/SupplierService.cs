@@ -1,4 +1,6 @@
-﻿using Supplier.Domain.Models;
+﻿using AutoMapper;
+using Supplier.Domain.DTOs;
+using Supplier.Domain.Models;
 using Supplier.Infra.Interfaces;
 using Supplier.Service.Interfaces;
 
@@ -8,10 +10,12 @@ namespace Supplier.Service.Services
     {
 
         private readonly ISupplierRepository _supplierRepository;
+        private readonly IMapper _mapper;
 
-        public SupplierService(ISupplierRepository supplierRepository)
+        public SupplierService(ISupplierRepository supplierRepository, IMapper mapper)
         {
             _supplierRepository = supplierRepository;
+            _mapper = mapper;
         }
 
         public async Task<bool> DeleteSupplier(int id)
@@ -19,43 +23,70 @@ namespace Supplier.Service.Services
             return await _supplierRepository.DeleteSupplier(id);
         }
 
-        public async Task<IEnumerable<SupplierType>> GetAllSuppliers()
-        {
-            return  await _supplierRepository.GetAllSuppliers();
-        }
-
-
-        public async Task<SupplierType> GetSupplierById(int id)
+        public async Task<IEnumerable<SupplierTypeDTO>> GetAllSuppliers()
         {
             try
             {
-                return await _supplierRepository.GetSupplier(id);
+                var suppliers = await _supplierRepository.GetAllSuppliers();
+                var response = _mapper.Map<IEnumerable<SupplierTypeDTO>>(suppliers);
+                return response;
             }
             catch (Exception ex)
             {
-                throw ex;
+                //TODO Logar erro
+                return new List<SupplierTypeDTO>().AsEnumerable();
+            }
+           
+        }
+
+
+        public async Task<SupplierTypeDTO> GetSupplierById(int id)
+        {
+            try
+            {
+                var supplier = await _supplierRepository.GetSupplier(id);
+                var response = _mapper.Map<SupplierTypeDTO>(supplier);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                //TODO Logar erro
+                return new SupplierTypeDTO();
             }
         }
 
-        public Task<SupplierType> InsertSupplier(SupplierType supplier)
+        public Task<SupplierTypeDTO> InsertSupplier(SupplierTypeDTO supplier)
         {
-            if(supplier == null)
-                throw new ArgumentNullException(nameof(supplier));
+            try
+            {
+                var newSupplier = _mapper.Map<SupplierType>(supplier);
+                var response = _supplierRepository.InsertSupplier(newSupplier);
+                var result = _mapper.Map<SupplierTypeDTO>(response);
 
-            var response = _supplierRepository.InsertSupplier(supplier);
-
-            return response;
-
+                return Task.FromResult(result);
+            }
+            catch (Exception ex)
+            {
+                //TODO Logar erro
+                return Task.FromResult(new SupplierTypeDTO());
+            }
         }
 
-        public Task<SupplierType> UpdateSupplier(SupplierType newSupplier)
+        public Task<SupplierTypeDTO> UpdateSupplier(SupplierTypeDTO newSupplier)
         {
-            if (newSupplier == null)
-                throw new ArgumentNullException(nameof(newSupplier));
+            try
+            {
+                var supplierToUpdate = _mapper.Map<SupplierType>(newSupplier);
+                var response = _supplierRepository.InsertSupplier(supplierToUpdate);
+                var result = _mapper.Map<SupplierTypeDTO>(response);
 
-            var response = _supplierRepository.UpdateSupplier(newSupplier);
-
-            return response;
+                return Task.FromResult(result);
+            }
+            catch (Exception ex)
+            { 
+                //TODO Logar erro
+                return Task.FromResult(new SupplierTypeDTO());
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Supplier.Api.Controllers;
+using Supplier.Domain.DTOs;
 using Supplier.Domain.Models;
 using Supplier.Domain.Responses;
 using Supplier.Service.Interfaces;
@@ -15,7 +16,7 @@ public class ControllerTests
     {
         //Arrage
         var mockService = new Mock<ISupplierService>();
-        mockService.Setup(p => p.GetAllSuppliers()).ReturnsAsync(new List<SupplierType> { new SupplierType { Id = 1 } });
+        mockService.Setup(p => p.GetAllSuppliers()).ReturnsAsync(new List<SupplierTypeDTO> { new SupplierTypeDTO { Id = 1 } });
         var controller = new SupplierController(mockService.Object);
         var expected = new List<SupplierType> {
             new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" } 
@@ -35,7 +36,7 @@ public class ControllerTests
     {
         //Arrage
         var mockService = new Mock<ISupplierService>();
-        mockService.Setup(p => p.GetAllSuppliers()).ReturnsAsync(new List<SupplierType>());
+        mockService.Setup(p => p.GetAllSuppliers()).ReturnsAsync(new List<SupplierTypeDTO>());
         var controller = new SupplierController(mockService.Object);
 
         //Act
@@ -52,7 +53,7 @@ public class ControllerTests
     {
         //Arrage
         var mockService = new Mock<ISupplierService>();
-        mockService.Setup(p => p.GetSupplierById(It.IsAny<int>())).ReturnsAsync(new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" });
+        mockService.Setup(p => p.GetSupplierById(It.IsAny<int>())).ReturnsAsync(new SupplierTypeDTO { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" });
         var controller = new SupplierController(mockService.Object);
         var expected = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
 
@@ -71,9 +72,9 @@ public class ControllerTests
     {
         //Arrage
         var mockService = new Mock<ISupplierService>();
-        mockService.Setup(p => p.InsertSupplier(It.IsAny<SupplierType>())).ReturnsAsync(new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" });
+        mockService.Setup(p => p.InsertSupplier(It.IsAny<SupplierTypeDTO>())).ReturnsAsync(new SupplierTypeDTO { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" });
         var controller = new SupplierController(mockService.Object);
-        var expected = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+        var expected = new SupplierTypeDTO { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
 
         //Act
         var response = controller.InsertSupplier(expected);
@@ -90,9 +91,9 @@ public class ControllerTests
     {
         //Arrage
         var mockService = new Mock<ISupplierService>();
-        mockService.Setup(p => p.UpdateSupplier(It.IsAny<SupplierType>())).ReturnsAsync(new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" });
+        mockService.Setup(p => p.UpdateSupplier(It.IsAny<SupplierTypeDTO>())).ReturnsAsync(new SupplierTypeDTO { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" });
         var controller = new SupplierController(mockService.Object);
-        var newSupplier = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+        var newSupplier = new SupplierTypeDTO { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
 
         //Act
         var response = controller.UpdateSupplier(newSupplier);
@@ -107,9 +108,9 @@ public class ControllerTests
     {
         //Arrage
         var mockService = new Mock<ISupplierService>();
-        mockService.Setup(p => p.UpdateSupplier(It.IsAny<SupplierType>())).ReturnsAsync(new SupplierType { Id = 2, FantasyName = "Mac Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" });
+        mockService.Setup(p => p.UpdateSupplier(It.IsAny<SupplierTypeDTO>())).ReturnsAsync(new SupplierTypeDTO { Id = 2, FantasyName = "Mac Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" });
         var controller = new SupplierController(mockService.Object);
-        var newSupplier = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
+        var newSupplier = new SupplierTypeDTO { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
 
         //Act
         var response = controller.UpdateSupplier(newSupplier);

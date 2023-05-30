@@ -53,7 +53,7 @@ namespace Supplier.UnitTests.Infra
         {
             // Arrange
             var options = new DbContextOptionsBuilder<SupplierContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: "TestDatabase2")
                 .Options;
 
             using (var context = new SupplierContext(options))
@@ -81,7 +81,7 @@ namespace Supplier.UnitTests.Infra
         {
             // Arrange
             var options = new DbContextOptionsBuilder<SupplierContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: "TestDatabase3")
                 .Options;
 
             var supplier = new SupplierType { FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
@@ -104,7 +104,7 @@ namespace Supplier.UnitTests.Infra
         {
             // Arrange
             var options = new DbContextOptionsBuilder<SupplierContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: "TestDatabase4")
                 .Options;
 
             using (var context = new SupplierContext(options))
@@ -135,7 +135,7 @@ namespace Supplier.UnitTests.Infra
         {
             // Arrange
             var options = new DbContextOptionsBuilder<SupplierContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: "TestDatabase5")
                 .Options;
 
             using (var context = new SupplierContext(options))
@@ -162,7 +162,7 @@ namespace Supplier.UnitTests.Infra
         {
             // Arrange
             var options = new DbContextOptionsBuilder<SupplierContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: "TestDatabase6")
                 .Options;
 
             using (var context = new SupplierContext(options))

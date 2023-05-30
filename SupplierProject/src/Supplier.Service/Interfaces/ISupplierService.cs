@@ -1,13 +1,14 @@
-﻿using Supplier.Domain.Models;
+﻿using Supplier.Domain.DTOs;
+using Supplier.Domain.Models;
 
 namespace Supplier.Service.Interfaces
 {
     public interface ISupplierService
     {
-        public Task<IEnumerable<SupplierType>> GetAllSuppliers();
-        public Task<SupplierType> GetSupplierById(int id);
-        public Task<SupplierType> InsertSupplier(SupplierType supplier);
-        public Task<SupplierType> UpdateSupplier(SupplierType supplier);
+        public Task<IEnumerable<SupplierTypeDTO>> GetAllSuppliers();
+        public Task<SupplierTypeDTO> GetSupplierById(int id);
+        public Task<SupplierTypeDTO> InsertSupplier(SupplierTypeDTO supplier);
+        public Task<SupplierTypeDTO> UpdateSupplier(SupplierTypeDTO supplier);
         public Task<bool> DeleteSupplier(int id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Supplier.Domain.DTOs;
 using Supplier.Domain.Models;
 using Supplier.Service.Interfaces;
 
@@ -37,7 +38,7 @@ namespace Supplier.Api.Controllers
         }
 
         [HttpPost("supplier")]
-        public async Task<IActionResult> InsertSupplier([FromBody] SupplierType supplier)
+        public async Task<IActionResult> InsertSupplier([FromBody] SupplierTypeDTO supplier)
         {
             var response = await _supplierService.InsertSupplier(supplier);
 
@@ -50,7 +51,7 @@ namespace Supplier.Api.Controllers
         }
 
         [HttpPut("supplier")]
-        public async Task<IActionResult> UpdateSupplier([FromBody] SupplierType supplier)
+        public async Task<IActionResult> UpdateSupplier([FromBody] SupplierTypeDTO supplier)
         {
             var response = await _supplierService.UpdateSupplier(supplier);
 
