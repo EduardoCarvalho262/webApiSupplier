@@ -64,7 +64,7 @@ namespace Supplier.Service.Services
 
                 return Task.FromResult(result);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //TODO Logar erro
                 return Task.FromResult(new SupplierTypeDTO());
