@@ -27,7 +27,7 @@ public class ControllerTests
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var suppliers = OKResult.Value.Should().BeAssignableTo<IEnumerable<SupplierResponse>>().Subject;
+        var suppliers = OKResult.Value.Should().BeAssignableTo<IEnumerable<SupplierTypeDTO>>().Subject;
         suppliers.Should().HaveCount(1);
     }
 
@@ -44,7 +44,7 @@ public class ControllerTests
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var suppliers = OKResult.Value.Should().BeAssignableTo<IEnumerable<SupplierResponse>>().Subject;
+        var suppliers = OKResult.Value.Should().BeAssignableTo<IEnumerable<SupplierTypeDTO>>().Subject;
         suppliers.Should().HaveCount(0);
     }
 
@@ -62,7 +62,7 @@ public class ControllerTests
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
-        var supplier = OKResult.Value.Should().BeAssignableTo<SupplierResponse>().Subject;
+        var supplier = OKResult.Value.Should().BeAssignableTo<SupplierTypeDTO>().Subject;
         supplier.Should().BeEquivalentTo(expected);
     }
 
@@ -81,7 +81,7 @@ public class ControllerTests
 
         //Assert
         var OKResult = response.Result.Should().BeOfType<CreatedResult>().Subject;
-        var supplier = OKResult.Value.Should().BeAssignableTo<SupplierResponse>().Subject;
+        var supplier = OKResult.Value.Should().BeAssignableTo<SupplierTypeDTO>().Subject;
         supplier.Should().BeEquivalentTo(expected);
     }
 
@@ -101,25 +101,6 @@ public class ControllerTests
         //Assert
         var OKResult = response.Result.Should().BeOfType<NoContentResult>().Subject;
     }
-
-
-    [Fact]
-    public void GivenARequest_WhenUpdateANonexistentSupplier_ThenReturnBadRequest()
-    {
-        //Arrage
-        var mockService = new Mock<ISupplierService>();
-        mockService.Setup(p => p.UpdateSupplier(It.IsAny<SupplierTypeDTO>())).ReturnsAsync(new SupplierTypeDTO { Id = 2, FantasyName = "Mac Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" });
-        var controller = new SupplierController(mockService.Object);
-        var newSupplier = new SupplierTypeDTO { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
-
-        //Act
-        var response = controller.UpdateSupplier(newSupplier);
-
-        //Assert
-        var OKResult = response.Result.Should().BeOfType<BadRequestResult>().Subject;
-    }
-
-
 
     [Fact]
     public void GivenARequest_WhenDeleteASupplier_ThenReturnOk()

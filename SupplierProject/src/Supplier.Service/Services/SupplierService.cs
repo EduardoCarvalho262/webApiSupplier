@@ -76,7 +76,7 @@ namespace Supplier.Service.Services
             try
             {
                 var supplierToUpdate = _mapper.Map<SupplierType>(newSupplier);
-                var response = _supplierRepository.InsertSupplier(supplierToUpdate);
+                var response = _supplierRepository.UpdateSupplier(supplierToUpdate);
                 var result = _mapper.Map<SupplierTypeDTO>(response.Result);
 
                 return Task.FromResult(result);
