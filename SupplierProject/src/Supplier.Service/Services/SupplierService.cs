@@ -60,7 +60,7 @@ namespace Supplier.Service.Services
             {
                 var newSupplier = _mapper.Map<SupplierType>(supplier);
                 var response = _supplierRepository.InsertSupplier(newSupplier);
-                var result = _mapper.Map<SupplierTypeDTO>(response);
+                var result = _mapper.Map<SupplierTypeDTO>(response.Result);
 
                 return Task.FromResult(result);
             }
@@ -77,7 +77,7 @@ namespace Supplier.Service.Services
             {
                 var supplierToUpdate = _mapper.Map<SupplierType>(newSupplier);
                 var response = _supplierRepository.InsertSupplier(supplierToUpdate);
-                var result = _mapper.Map<SupplierTypeDTO>(response);
+                var result = _mapper.Map<SupplierTypeDTO>(response.Result);
 
                 return Task.FromResult(result);
             }

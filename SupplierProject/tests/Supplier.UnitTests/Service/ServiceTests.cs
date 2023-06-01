@@ -83,7 +83,7 @@ namespace Supplier.UnitTests.Service
 
             _mapperMock.Setup(mapper => mapper.Map<SupplierType>(supplierDto)).Returns(newSupplier);
             _supplierRepositoryMock.Setup(repo => repo.InsertSupplier(newSupplier)).ReturnsAsync(insertedSupplier);
-            _mapperMock.Setup(mapper => mapper.Map<SupplierTypeDTO>(insertedSupplier)).Returns(expectedResponse);
+            _mapperMock.Setup(mapper => mapper.Map<SupplierTypeDTO>(It.IsAny<SupplierType>())).Returns(expectedResponse);
 
             // Act
             var result = await _supplierService.InsertSupplier(supplierDto);
@@ -93,31 +93,26 @@ namespace Supplier.UnitTests.Service
             result.Should().BeEquivalentTo(expectedResponse);
         }
 
+       
         [Fact]
-        public void GivenARequest_WhenUpdateASupplier_ThenReturnASupplierUpdated()
+        public async Task GiveASupplier_WhenValidSupplier_ReturnsUpdatedSupplier()
         {
-            //Arrage
-            var mockReturn = new SupplierType { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
-            var returnExpected = new SupplierTypeDTO { Id = 1, FantasyName = "Mc Donalds", Cnpj = "00000/000-85", Email = "mac@gmail.com", Telephone = "11985092041" };
-            _supplierRepositoryMock.Setup(p => p.UpdateSupplier(It.IsAny<SupplierType>())).ReturnsAsync(mockReturn);
-            _mapperMock.Setup(mapper => mapper.Map<SupplierTypeDTO>(It.IsAny<SupplierType>()))
-            .Returns(new SupplierTypeDTO
-            {
-                Id = returnExpected.Id,
-                FantasyName = returnExpected.FantasyName,
-                Cnpj = returnExpected.Cnpj,
-                Email = returnExpected.Email,
-                Telephone = returnExpected.Telephone
-            });
+            // Arrange
+            var newSupplier = new SupplierTypeDTO { Id = 1, FantasyName = "Supplier A" };
+            var mappedSupplier = new SupplierType { Id = 1, FantasyName = "Supplier A" };
+            var insertedSupplier = new SupplierType { Id = 1, FantasyName = "Supplier B" };
+            var expectedResponse = new SupplierTypeDTO { Id = 1, FantasyName = "Supplier A" };
 
-            //Act
-            var response = _supplierService.UpdateSupplier(returnExpected);
+            _mapperMock.Setup(m => m.Map<SupplierType>(newSupplier)).Returns(mappedSupplier);
+            _supplierRepositoryMock.Setup(r => r.InsertSupplier(mappedSupplier)).ReturnsAsync(insertedSupplier);
+            _mapperMock.Setup(m => m.Map<SupplierTypeDTO>(insertedSupplier)).Returns(expectedResponse);
 
+            // Act
+            var result = await _supplierService.UpdateSupplier(newSupplier);
 
-            //Assert
-            response.Should().NotBeNull();
-            response.Result.Should().BeOfType<Task<SupplierTypeDTO>>();
-            response.Result.Id.Should().Be(mockReturn.Id);
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeEquivalentTo(expectedResponse);
         }
 
         [Fact]
