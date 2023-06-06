@@ -105,7 +105,8 @@ namespace Supplier.UnitTests.Service
 
             _mapperMock.Setup(m => m.Map<SupplierType>(newSupplier)).Returns(mappedSupplier);
             _supplierRepositoryMock.Setup(r => r.InsertSupplier(mappedSupplier)).ReturnsAsync(insertedSupplier);
-            _mapperMock.Setup(m => m.Map<SupplierTypeDTO>(insertedSupplier)).Returns(expectedResponse);
+            _mapperMock.Setup(m => m.Map<SupplierTypeDTO>(It.IsAny<SupplierType>())).Returns(expectedResponse);
+
 
             // Act
             var result = await _supplierService.UpdateSupplier(newSupplier);

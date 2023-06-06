@@ -10,6 +10,6 @@ namespace Supplier.Domain.Responses
     public class SupplierResponse
     {
         public string? Message { get; set; }
-        public IList<SupplierTypeDTO>? Response { get; set; }
+        public IList<SupplierTypeDTO>? Response { get; set; } = new List<SupplierTypeDTO>();
     }
 }
