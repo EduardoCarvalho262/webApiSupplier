@@ -31,7 +31,7 @@ namespace Supplier.Service.Services
                 var suppliers = await _supplierRepository.GetAllSuppliers();
                 var response = _mapper.Map<IEnumerable<SupplierTypeDTO>>(suppliers);
 
-                var result = new SupplierResponse { Message = "Teste", Response = response.ToList() };
+                var result = new SupplierResponse { Message = "Todos fornecedores obtidos com sucesso!", Response = response.ToList() };
 
                 return result;
             }
@@ -48,13 +48,14 @@ namespace Supplier.Service.Services
             try
             {
                 var supplier = await _supplierRepository.GetSupplier(id);
-                var response = _mapper.Map<SupplierTypeDTO>(supplier);
-                return response;
+                var response = new List<SupplierTypeDTO> { _mapper.Map<SupplierTypeDTO>(supplier) };
+
+                return new SupplierResponse { Message = "Forncedor obtido com sucesso!", Response = response };
             }
             catch (Exception ex)
             {
                 //TODO Logar erro
-                return new SupplierResponse { Message = "Erro" };
+                return new SupplierResponse { Message = ex.Message };
             }
         }
 
@@ -63,10 +64,10 @@ namespace Supplier.Service.Services
             try
             {
                 var newSupplier = _mapper.Map<SupplierType>(supplier);
-                var response =  await _supplierRepository.InsertSupplier(newSupplier);
-                var result = _mapper.Map<SupplierTypeDTO>(response.Result);
+                var result =  await _supplierRepository.InsertSupplier(newSupplier);
+                var response = new List<SupplierTypeDTO> { _mapper.Map<SupplierTypeDTO>(result) };
 
-                return Task.FromResult(result);
+                return new SupplierResponse { Message = "Fornecedor obtido com sucesso", Response = response };
             }
             catch (Exception)
             {
@@ -77,13 +78,13 @@ namespace Supplier.Service.Services
 
         public async Task<SupplierResponse> UpdateSupplier(SupplierTypeDTO newSupplier)
         {
-            try
+            try 
             {
                 var supplierToUpdate = _mapper.Map<SupplierType>(newSupplier);
-                var response = await _supplierRepository.UpdateSupplier(supplierToUpdate);
-                var result = _mapper.Map<SupplierTypeDTO>(response.Result);
+                var result = await _supplierRepository.UpdateSupplier(supplierToUpdate);
+                var response = new List<SupplierTypeDTO> { _mapper.Map<SupplierTypeDTO>(result) };
 
-                return Task.FromResult(result);
+                return new SupplierResponse { Message = "Atualizado com Sucesso!", Response = response };
             }
             catch (Exception ex)
             {

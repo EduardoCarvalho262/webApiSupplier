@@ -34,7 +34,7 @@ namespace Supplier.UnitTests.Service
 
             //Assert
             response.Should().BeAssignableTo<IEnumerable<SupplierTypeDTO>>();
-            response.Should().ContainInOrder(expectedResponse);
+            response.Response.Should().ContainInOrder(expectedResponse);
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace Supplier.UnitTests.Service
             _supplierRepositoryMock.Setup(p => p.GetAllSuppliers()).ReturnsAsync(new List<SupplierType>());
 
             //Act
-            var response = _supplierService.GetAllSuppliers().Result.ToList();
+            var response = _supplierService.GetAllSuppliers().Result.Response;
 
 
             //Assert

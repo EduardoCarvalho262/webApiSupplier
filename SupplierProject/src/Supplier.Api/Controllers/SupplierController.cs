@@ -45,7 +45,7 @@ namespace Supplier.Api.Controllers
 
             if (response != null)
             {
-                return Created("/api/supplier/" + response.Id, response);
+                return Created("/api/supplier/" + response.Response.FirstOrDefault().Id, response);
             }
             
             return BadRequest();
