@@ -3,6 +3,7 @@ using FluentAssertions;
 using Moq;
 using Supplier.Domain.DTOs;
 using Supplier.Domain.Models;
+using Supplier.Domain.Responses;
 using Supplier.Infra.Interfaces;
 using Supplier.Service.Services;
 
@@ -27,13 +28,13 @@ namespace Supplier.UnitTests.Service
             //Arrage
             var mockReturn = new List<SupplierType>() { new SupplierType { Id = 1 } }.ToList();
             var expectedResponse = new List<SupplierTypeDTO>().AsEnumerable();
-            _supplierRepositoryMock.Setup(p => p.GetAllSuppliers()).ReturnsAsync(mockReturn.AsEnumerable<SupplierType>);
+            _supplierRepositoryMock.Setup(p => p.GetAllSuppliers()).ReturnsAsync(mockReturn.ToList<SupplierType>);
 
             //Act
             var response = await _supplierService.GetAllSuppliers();
 
             //Assert
-            response.Should().BeAssignableTo<IEnumerable<SupplierTypeDTO>>();
+            response.Should().BeAssignableTo<SupplierResponse>();
             response.Response.Should().ContainInOrder(expectedResponse);
         }
 
@@ -68,7 +69,7 @@ namespace Supplier.UnitTests.Service
 
             // Assert
             result.Should().NotBeNull();
-            result.Should().BeEquivalentTo(expectedResponse);
+            result.Response.FirstOrDefault().Should().BeEquivalentTo(expectedResponse);
         }
 
 
@@ -90,7 +91,7 @@ namespace Supplier.UnitTests.Service
 
             // Assert
             result.Should().NotBeNull();
-            result.Should().BeEquivalentTo(expectedResponse);
+            result.Response.FirstOrDefault().Should().BeEquivalentTo(expectedResponse);
         }
 
        
@@ -100,12 +101,13 @@ namespace Supplier.UnitTests.Service
             // Arrange
             var newSupplier = new SupplierTypeDTO { Id = 1, FantasyName = "Supplier A" };
             var mappedSupplier = new SupplierType { Id = 1, FantasyName = "Supplier A" };
+            var expectedSupplier = new SupplierTypeDTO { Id = 1, FantasyName = "Supplier A" };
             var insertedSupplier = new SupplierType { Id = 1, FantasyName = "Supplier B" };
-            var expectedResponse = new SupplierTypeDTO { Id = 1, FantasyName = "Supplier A" };
+            var expectedResponse = new SupplierResponse { Message = "Atualizado com Sucesso!", Response = new List<SupplierTypeDTO> { new SupplierTypeDTO { Id = 1, FantasyName = "Supplier A" } } };
 
             _mapperMock.Setup(m => m.Map<SupplierType>(newSupplier)).Returns(mappedSupplier);
             _supplierRepositoryMock.Setup(r => r.InsertSupplier(mappedSupplier)).ReturnsAsync(insertedSupplier);
-            _mapperMock.Setup(m => m.Map<SupplierTypeDTO>(It.IsAny<SupplierType>())).Returns(expectedResponse);
+            _mapperMock.Setup(m => m.Map<SupplierTypeDTO>(It.IsAny<SupplierType>())).Returns(expectedSupplier);
 
 
             // Act
