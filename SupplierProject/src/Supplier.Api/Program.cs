@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Supplier.Domain.DTOs;
 using Supplier.Domain.Models;
+using Supplier.Domain.Profiles;
 using Supplier.Infra.Context;
 using Supplier.Infra.Interfaces;
 using Supplier.Infra.Repository;
@@ -18,19 +19,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<ISupplierService, SupplierService>();
 builder.Services.AddTransient<ISupplierRepository, SupplierRepository>();
-
+builder.Services.AddAutoMapper(typeof(SupplierProfile));
 
 builder.Services.AddDbContext<SupplierContext>(options =>
                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ISupplierContext>(provider => provider.GetService<SupplierContext>());
-
-var config = new MapperConfiguration(cfg =>
-{
-    cfg.CreateMap<SupplierType, SupplierTypeDTO>();
-    cfg.CreateMap<SupplierTypeDTO, SupplierType>();
-    cfg.CreateMap<IEnumerable<SupplierType>, IEnumerable<SupplierTypeDTO>>();
-});
 
 var app = builder.Build();
 
