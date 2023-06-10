@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<ISupplierService, SupplierService>();
-builder.Services.AddTransient<ISupplierRepository, SupplierRepository>();
+builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 builder.Services.AddAutoMapper(typeof(SupplierProfile));
 
 builder.Services.AddDbContext<SupplierContext>(options =>

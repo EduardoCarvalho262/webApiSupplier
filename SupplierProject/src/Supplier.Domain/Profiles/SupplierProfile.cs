@@ -10,7 +10,6 @@ namespace Supplier.Domain.Profiles
         {
             CreateMap<SupplierType, SupplierTypeDTO>();
             CreateMap<SupplierTypeDTO, SupplierType>();
-            CreateMap<IEnumerable<SupplierType>, IEnumerable<SupplierTypeDTO>>();
         }
     }
 }

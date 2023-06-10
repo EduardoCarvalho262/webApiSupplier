@@ -29,16 +29,16 @@ namespace Supplier.Service.Services
             try
             {
                 var suppliers = await _supplierRepository.GetAllSuppliers();
-                var response = _mapper.Map<IEnumerable<SupplierTypeDTO>>(suppliers);
+                var response = _mapper.Map<List<SupplierTypeDTO>>(suppliers);
 
-                var result = new SupplierResponse { Message = "Todos fornecedores obtidos com sucesso!", Response = response.ToList() };
+                var result = new SupplierResponse { Message = "Todos fornecedores obtidos com sucesso!", Response = response};
 
                 return result;
             }
             catch (Exception ex)
             {
                 //TODO Logar erro
-                return new SupplierResponse { Message = "Erro"};
+                return new SupplierResponse { Message =$"Erro: {ex.Message}"};
             }
            
         }
@@ -55,7 +55,7 @@ namespace Supplier.Service.Services
             catch (Exception ex)
             {
                 //TODO Logar erro
-                return new SupplierResponse { Message = ex.Message };
+                return new SupplierResponse { Message = $"Erro: {ex.Message}" };
             }
         }
 
@@ -69,10 +69,10 @@ namespace Supplier.Service.Services
 
                 return new SupplierResponse { Message = "Fornecedor obtido com sucesso", Response = response };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //TODO Logar erro
-                return new SupplierResponse { Message = "Erro" };
+                return new SupplierResponse { Message = $"Erro: {ex.Message}" };
             }
         }
 
@@ -89,7 +89,7 @@ namespace Supplier.Service.Services
             catch (Exception ex)
             {
                 //TODO Logar erro
-                return new SupplierResponse { Message = "Erro" };
+                return new SupplierResponse { Message = $"Erro: {ex.Message}" };
             }
         }
     }

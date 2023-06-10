@@ -29,7 +29,7 @@ namespace Supplier.Infra.Repository
             return true;
         }
 
-        public async Task<IEnumerable<SupplierType>> GetAllSuppliers()
+        public async Task<List<SupplierType>> GetAllSuppliers()
         {
             return await _supplierContext.Supplier.ToListAsync();
         }

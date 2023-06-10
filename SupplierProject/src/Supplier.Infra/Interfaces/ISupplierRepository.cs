@@ -4,7 +4,7 @@ namespace Supplier.Infra.Interfaces
 {
     public interface ISupplierRepository
     {
-        Task<IEnumerable<SupplierType>> GetAllSuppliers();
+        Task<List<SupplierType>> GetAllSuppliers();
         Task<SupplierType> GetSupplier(int id);
         Task<SupplierType> InsertSupplier(SupplierType supplier);
         Task<SupplierType> UpdateSupplier(SupplierType supplier);

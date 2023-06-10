@@ -27,8 +27,9 @@ namespace Supplier.UnitTests.Service
         {
             //Arrage
             var mockReturn = new List<SupplierType>() { new SupplierType { Id = 1 } }.ToList();
-            var expectedResponse = new List<SupplierTypeDTO>().AsEnumerable();
-            _supplierRepositoryMock.Setup(p => p.GetAllSuppliers()).ReturnsAsync(mockReturn.ToList<SupplierType>);
+            var expectedResponse = new List<SupplierTypeDTO>() { new SupplierTypeDTO { Id = 1 } };
+            _supplierRepositoryMock.Setup(p => p.GetAllSuppliers()).ReturnsAsync(mockReturn);
+            _mapperMock.Setup(mapper => mapper.Map<List<SupplierTypeDTO>>(mockReturn)).Returns(expectedResponse);
 
             //Act
             var response = await _supplierService.GetAllSuppliers();
@@ -43,6 +44,7 @@ namespace Supplier.UnitTests.Service
         {
             //Arrage
             _supplierRepositoryMock.Setup(p => p.GetAllSuppliers()).ReturnsAsync(new List<SupplierType>());
+            _mapperMock.Setup(mapper => mapper.Map<List<SupplierTypeDTO>>(new List<SupplierType>())).Returns(new List<SupplierTypeDTO>());
 
             //Act
             var response = _supplierService.GetAllSuppliers().Result.Response;

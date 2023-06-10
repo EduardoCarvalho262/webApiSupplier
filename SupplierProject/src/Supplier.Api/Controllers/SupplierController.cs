@@ -24,6 +24,9 @@ namespace Supplier.Api.Controllers
         {
             var response = await _supplierService.GetAllSuppliers();
 
+            if(response.Message.Contains("Erro:"))
+                return BadRequest(response);
+
             return Ok(response);
         }
 
@@ -32,8 +35,8 @@ namespace Supplier.Api.Controllers
         {
             var response = await _supplierService.GetSupplierById(id);
 
-            if (response == null)
-                return NotFound();
+            if (response.Message.Contains("Erro:"))
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -43,12 +46,10 @@ namespace Supplier.Api.Controllers
         {
             var response = await _supplierService.InsertSupplier(supplier);
 
-            if (response != null)
-            {
-                return Created("/api/supplier/" + response.Response.FirstOrDefault().Id, response);
-            }
-            
-            return BadRequest();
+            if (response.Message.Contains("Erro:"))
+                return BadRequest(response);
+
+            return Created("/api/supplier/" + response.Response.FirstOrDefault().Id, response);
         }
 
         [HttpPut("supplier")]
@@ -56,12 +57,10 @@ namespace Supplier.Api.Controllers
         {
             var response = await _supplierService.UpdateSupplier(supplier);
 
-            if (response != null)
-            {
-                return NoContent();
-            }
+            if (response.Message.Contains("Erro:"))
+                return BadRequest(response);
 
-            return BadRequest();
+            return Ok(response);
         }
 
         [HttpDelete("supplier")]

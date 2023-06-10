@@ -99,7 +99,7 @@ public class ControllerTests
         var response = controller.UpdateSupplier(newSupplier);
 
         //Assert
-        var OKResult = response.Result.Should().BeOfType<NoContentResult>().Subject;
+        var OKResult = response.Result.Should().BeOfType<OkObjectResult>().Subject;
     }
 
     [Fact]
